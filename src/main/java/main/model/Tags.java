@@ -1,15 +1,12 @@
 package main.model;
 
-import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -26,10 +23,12 @@ public class Tags {
   private String name;//VARCHAR(255) NOT NULL текст тэга
 
 
-  @OneToMany(mappedBy = "tags")
-  protected Set<TagToPost> tagToPosts = new HashSet<>();
+//  @OneToMany(mappedBy = "tags")
+//  protected Set<TagToPost> tagToPosts = new HashSet<>();
 
-
+//   @ManyToMany(mappedBy = "TagToPost")
+   @ManyToMany(mappedBy = "postTags")
+  Set<Post> tagPosts;
 
   public int getId() {
     return id;
@@ -46,4 +45,12 @@ public class Tags {
   public void setName(String name) {
     this.name = name;
   }
+
+//  public Set<Post> getTagPosts() {
+//    return tagPosts;
+//  }
+//
+//  public void setTagPosts(Set<Post> tagPosts) {
+//    this.tagPosts = tagPosts;
+//  }
 }

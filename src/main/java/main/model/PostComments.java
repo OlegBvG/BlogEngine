@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 
 @Entity
 @Table(name = "post_comments")
@@ -21,6 +22,7 @@ public class PostComments {
 
   @Column(name = "parent_id")
 //  @NotNull
+//  @Null
   private int parentId;//INT   комментарий, на который оставлен этот комментарий (может быть NULL, если комментарий оставлен просто к посту)
 
   @Column(name = "post_id")
@@ -43,13 +45,13 @@ public class PostComments {
   @JoinColumn(
       name = "user_id",
       insertable = false, updatable = false)
-  protected Users users;
+  private User user;
 
   @ManyToOne
   @JoinColumn(
       name = "post_id",
       insertable = false, updatable = false)
-  protected Posts posts;
+  private Post post;
 
   public int getId() {
     return id;
@@ -98,4 +100,20 @@ public class PostComments {
   public void setText(String text) {
     this.text = text;
   }
+
+//  public User getUser() {
+//    return user;
+//  }
+//
+//  public void setUser(User user) {
+//    this.user = user;
+//  }
+//
+//  public Post getPost() {
+//    return post;
+//  }
+//
+//  public void setPost(Post post) {
+//    this.post = post;
+//  }
 }

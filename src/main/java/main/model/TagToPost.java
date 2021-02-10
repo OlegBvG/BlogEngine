@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -26,10 +28,34 @@ public class TagToPost {
   @NotNull
   private int tagId; //INT NOT NULL id тэга
 
-  @ManyToOne
-  @JoinColumn(
-      name = "tag_id",
-      insertable = false, updatable = false)
-  protected Tags tags;
+//  @ManyToOne
+//  @JoinColumn(
+//      name = "tag_id",
+//      insertable = false, updatable = false)
+//  protected Tags tags;
 
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public int getPostId() {
+    return postId;
+  }
+
+  public void setPostId(int postId) {
+    this.postId = postId;
+  }
+
+  public int getTagId() {
+    return tagId;
+  }
+
+  public void setTagId(int tagId) {
+    this.tagId = tagId;
+  }
 }

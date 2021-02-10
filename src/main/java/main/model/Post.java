@@ -1,7 +1,6 @@
 package main.model;
 
 import java.sql.Timestamp;
-import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
@@ -12,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -19,22 +20,25 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "posts")
-public class Posts {
+public class Post {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id; // INT NOT NULL AUTO_INCREMENT id поста
 
-  @Column(columnDefinition = "TINYINT")
+  @Column(name="is_active", columnDefinition = "TINYINT")
   @NotNull
-  private int is_active;//TINYINT NOT NULL скрыта или активна публикация: 0 или 1
-
+  private int isActive;//TINYINT NOT NULL скрыта или активна публикация: 0 или 1
+//  private int is_active;//TINYINT NOT NULL скрыта или активна публикация: 0 или 1
+/*
+@Column(name =  "price_per_hour")
+    private float pricePerHour;
+ */
   @Enumerated(EnumType.STRING)
-  @Column(columnDefinition = "ENUM('NEW', 'ACCEPTED', 'DECLINED')")
+  @Column(name="moderation_status", columnDefinition = "ENUM('NEW', 'ACCEPTED', 'DECLINED')")
   @NotNull
-  private ModerationStatus moderation_status; //ENUM("NEW", "ACCEPTED", "DECLINED") NOT NULL статус модерации, по умолчанию значение "NEW".
+  private ModerationStatus moderationStatus; //ENUM("NEW", "ACCEPTED", "DECLINED") NOT NULL статус модерации, по умолчанию значение "NEW".
 
   @Column
-  @NotNull
   private int moderator_id; // INT  ID пользователя-модератора,  принявшего решение, или NULL
 
   @Column
@@ -62,13 +66,29 @@ public class Posts {
   @JoinColumn(
       name = "user_id",
       insertable = false, updatable = false)
-  protected Users users;
+  private User user;
 
-  @OneToMany(mappedBy = "posts")
-  protected Set<PostVotes> postVotes = new HashSet<>();
+  @ManyToOne
+  @JoinColumn(
+      name = "moderator_id",
+      insertable = false, updatable = false)
+  private UsersModerator usersModerator;
 
-  @OneToMany(mappedBy = "posts")
-  protected Set<PostComments> postComments = new HashSet<>();
+  @OneToMany(mappedBy = "post")
+  private Set<PostVotes> postVotes = new HashSet<>();
+
+  @OneToMany(mappedBy = "post")
+  private Set<PostComments> postComments = new HashSet<>();
+
+
+  @ManyToMany
+  @JoinTable(
+//      name = "TagToPost",
+      name = "tag2post",
+      joinColumns = @JoinColumn(name = "post_id"),
+      inverseJoinColumns = @JoinColumn(name = "tag_id"))
+  Set<Tags> postTags;
+
 
   public int getId() {
     return id;
@@ -78,20 +98,20 @@ public class Posts {
     this.id = id;
   }
 
-  public int getIs_active() {
-    return is_active;
+  public int getIsActive() {
+    return isActive;
   }
 
-  public void setIs_active(int is_active) {
-    this.is_active = is_active;
+  public void setIsActive(int isActive) {
+    this.isActive = isActive;
   }
 
-  public ModerationStatus getModeration_status() {
-    return moderation_status;
+  public ModerationStatus getModerationStatus() {
+    return moderationStatus;
   }
 
-  public void setModeration_status(ModerationStatus moderation_status) {
-    this.moderation_status = moderation_status;
+  public void setModerationStatus(ModerationStatus moderationStatus) {
+    this.moderationStatus = moderationStatus;
   }
 
   public int getModerator_id() {
@@ -141,4 +161,24 @@ public class Posts {
   public void setView_count(int view_count) {
     this.view_count = view_count;
   }
+
+  public User getUser() {
+    return user;
+  }
+
+//  public UsersModerator getUsersModerator() {
+//    return usersModerator;
+//  }
+//
+  public Set<PostVotes> getPostVotes() {
+    return postVotes;
+  }
+
+  public Set<PostComments> getPostComments() {
+    return postComments;
+  }
+
+//  public Set<Tags> getPostTags() {
+//    return postTags;
+//  }
 }

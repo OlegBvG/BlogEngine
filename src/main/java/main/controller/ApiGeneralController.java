@@ -3,6 +3,7 @@ package main.controller;
 import main.api.response.InitResponse;
 import main.api.response.SettingsResponse;
 import main.api.response.TagResponse;
+import main.model.GlobalSettings;
 import main.service.SettingsService;
 import main.service.TagService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,6 @@ public class ApiGeneralController {
 
   @GetMapping("/settings")
   private SettingsResponse settings() {
-//    return new SettingsResponse();
     return settingsService.getGlobalSettings();
   }
 

@@ -40,13 +40,13 @@ public class PostVotes {
   @JoinColumn(
       name = "user_id",
       insertable = false, updatable = false)
-  protected Users users;
+  private User user;
 
   @ManyToOne
   @JoinColumn(
       name = "post_id",
       insertable = false, updatable = false)
-  protected Posts posts;
+  private Post post;
 
   public int getId() {
     return id;
@@ -87,4 +87,20 @@ public class PostVotes {
   public void setValue(int value) {
     this.value = value;
   }
+
+//  public User getUser() {
+//    return user;
+//  }
+//
+//  public void setUser(User user) {
+//    this.user = user;
+//  }
+//
+//  public Post getPost() {
+//    return post;
+//  }
+//
+//  public void setPost(Post post) {
+//    this.post = post;
+//  }
 }

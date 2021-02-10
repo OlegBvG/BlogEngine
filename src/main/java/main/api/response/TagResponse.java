@@ -1,15 +1,15 @@
 package main.api.response;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class TagResponse {
-  private ArrayList tags;
+  private List<Tag> tags;
 
-  public ArrayList getTags() {
+  public List getTags() {
     return tags;
   }
 
-  public void setTags(ArrayList tags) {
+  public void setTags(List tags) {
     this.tags = tags;
   }
 }

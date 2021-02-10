@@ -1,6 +1,7 @@
 package main.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import main.api.response.Tag;
 import main.api.response.TagResponse;
 import org.springframework.stereotype.Service;
@@ -10,7 +11,7 @@ public class TagService {
 
   public TagResponse getTags(){
     TagResponse tagResponse = new TagResponse();
-    ArrayList<Tag> tags = new ArrayList<>();
+    List<Tag> tags = new ArrayList<>();
 
     Tag tag = new Tag();
     tag.setName("PHP");
@@ -27,14 +28,3 @@ public class TagService {
   }
 
 }
-/*
-@Service
-public class PostService {
-
-  public PostResponse getPartPosts() {
-    PostResponse postResponse = new PostResponse();
-    postResponse.setCount(390);
-    postResponse.setPosts(new ArrayList<Integer>());
-    return postResponse;
-  }
- */

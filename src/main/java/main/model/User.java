@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "users")
-public class Users {
+public class User {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,29 +37,35 @@ public class Users {
   private String email; // e-mail пользователя
 
   @Column
-
   @NotNull
   private String password; //хэш пароля пользователя
 
+  @Column
   private String code; //код для восстановления пароля, может быть NULL
 
   @Column(columnDefinition = "TEXT")
   private String photo;  //TEXT фотография (ссылка на файл), может быть NULL
 
 
-  @OneToMany(mappedBy = "users")
-  protected Set<Posts> posts = new HashSet<>();
+  @OneToMany(mappedBy = "user")
+  private Set<Post> posts = new HashSet<>();
 
-  @OneToMany(mappedBy = "users")
-  protected Set<PostVotes> postVotes = new HashSet<>();
+  @OneToMany(mappedBy = "user")
+  private Set<PostVotes> postVotes = new HashSet<>();
 
-  @OneToMany(mappedBy = "users")
-  protected Set<PostComments> postComments = new HashSet<>();
+  @OneToMany(mappedBy = "user")
+  private Set<PostComments> postComments = new HashSet<>();
+
+
 
 
   public int getId() {
     return id;
   }
+
+//  public int getId() {
+//    return id;
+//  }
 
   public void setId(int id) {
     this.id = id;
@@ -120,4 +126,29 @@ public class Users {
   public void setPhoto(String photo) {
     this.photo = photo;
   }
+
+
+//  public Set<Post> getPosts() {
+//    return posts;
+//  }
+//
+//  public void setPosts(Set<Post> posts) {
+//    this.posts = posts;
+//  }
+//
+//  public Set<PostVotes> getPostVotes() {
+//    return postVotes;
+//  }
+//
+//  public void setPostVotes(Set<PostVotes> postVotes) {
+//    this.postVotes = postVotes;
+//  }
+//
+//  public Set<PostComments> getPostComments() {
+//    return postComments;
+//  }
+//
+//  public void setPostComments(Set<PostComments> postComments) {
+//    this.postComments = postComments;
+//  }
 }

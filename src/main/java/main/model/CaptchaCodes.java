@@ -61,4 +61,6 @@ public class CaptchaCodes {
   public void setSecretCode(int secretCode) {
     this.secretCode = secretCode;
   }
+
+
 }
