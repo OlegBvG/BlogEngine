@@ -2,92 +2,129 @@ package main.service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import main.api.response.PostResponse;
-//import main.repositories.PostQueryRepository;
 import main.model.Post;
 import main.repositories.PostRepository;
 import main.repositories.PostToView;
 import main.repositories.UserToView;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PostService {
+
   @Autowired
-  private PostRepository postRepository;
-//  private PostQueryRepository postRepository;
+  public PostRepository postRepository;
+
   @Transactional
 
-  public PostResponse getPartPosts() {
-    Date date = new Date();
+  public PostResponse getPartPosts(Map<String, String> allParams) {
 
-    PostResponse postResponse = new PostResponse();
+//    this.allParams = allParams;
 
-    postRepository.getAllPosts(1, "ACCEPTED", date).stream()
-        .forEach(p -> System.out.println(p.getUser().getName()));
-    postRepository.getAllPosts(1, "ACCEPTED", date).stream()
-        .forEach(p -> System.out.println(p.getPostVotes().stream().filter(postVotes -> postVotes.getValue()==1).count()));
-
-    List<Post> posts = postRepository.getAllPosts(1, "ACCEPTED", date);
+//    sortPosts.put("recent", "");
+//    sortPosts.put("recent", "time");
+//    sortPosts.put("popular", "commentCount DESC");
+//    sortPosts.put("best", "likeCount DESC");
+//    sortPosts.put("early", "time DESC");
 
 
+//System.out.println(updateFoos());
+//    Sort allNamesSort = new Sort(new Sort.Order(Sort.Direction.Desc, "firstName"), new Sort.Order(Sort.Direction.Asc, "lastName"))
+//    Pageable pageable =  PageRequest.of(0, 10, Direction.DESC, "viewCount");
+//    Pageable page = new PageRequest(0, 10, SortDirection.Asc, "firstName")
+//repository.findByFirstName("Test", page)
+//    Pageable pageable =  new PageRequest(0, 10, Direction.DESC, "viewCount");, Direction.DESC, "viewCount"
+//    Pageable pageable =  PageRequest.of(0, 10);
+//    Date date = new Date();
+
+//    PostResponse postResponse = new PostResponse();
+
+//    System.out.println(" postResponse.getOffset() - " + postResponse.Offset);
+
+//    postRepository.getAllPosts(1, "ACCEPTED", date).stream()
+//        .forEach(p -> System.out.println(p.getUser().getName()));
+//    postRepository.getAllPosts(1, "ACCEPTED", date).stream()
+//        .forEach(p -> System.out.println(p.getPostVotes().stream().filter(postVotes -> postVotes.getValue()==1).count()));
+
+//    Page<Post> posts = (Page<Post>) postRepository.getAllPosts(1, "ACCEPTED", date, pageable);
+//    pageable.
+
+//    System.out.println("параметры " + allParams.get("offset"));
+    int offset = Integer.parseInt(allParams.get("offset"));
+    int limit = Integer.parseInt(allParams.get("limit"));
+    String mode = allParams.get("mode");
+
+//    Pageable pageable = PageRequest.of(offset/limit, limit, Sort.by("pv.likeCount"));
+    Pageable pageable = PageRequest.of(offset / limit, limit);
+    List<Post> posts;
+    switch (mode){
+      case "recent":
+        posts = postRepository
+            .getPostsRecent(1, "ACCEPTED", new Date(), pageable);
+        break;
+      case "popular":
+         posts = postRepository
+            .getPostsPopular(1, "ACCEPTED", new Date(), pageable);
+         break;
+      case "best":
+        posts = postRepository
+            .getPostsBest(1, "ACCEPTED", new Date(), pageable);
+        break;
+      case "early":
+        posts = postRepository
+            .getPostsEarly(1, "ACCEPTED", new Date(), pageable);
+        break;
+      default:
+        posts = postRepository
+            .getPostsRecent(1, "ACCEPTED", new Date(), pageable);
+
+    }
 
     List<PostToView> postToView;
     postToView = posts.stream().map(post ->
-        new PostToView(1, 123,
-            new UserToView(1, "пользователь"),
-//              new User(post.getUser_id(), post.getUser().getName()),
-//              post.getUser(),
-            "Title", "getAnnounce()"
-            , 1
-            , 2
-            , 3
-//,5
-            , 4
-        ))
+        new PostToView(post.getId(), post.getTime().getTime() / 1000,
+            new UserToView(post.getUser_id(), post.getUser().getName()),
+            post.getTitle(), "post.getAnnounce()"
+            , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == 1)
+            .count()
+            , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == -1)
+            .count()
+            ,  post.getPostComments().size()
+            , post.getView_count()))
         .collect(
             Collectors.toList());
-    postToView.stream().forEach(p -> System.out.println("ID - " + p.getId()));
 
 
-/*
-    List<PostToView> postToView;
-      postToView = posts.stream().map(post ->
-          new PostToView(post.getId(), post.getTime(),
-              new UserToView(1, "post.getUser().getName()"),
-//              new User(post.getUser_id(), post.getUser().getName()),
-//              post.getUser(),
-              post.getTitle(), "post.getAnnounce()"
-              , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue()==1).count()
-              , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue()==-1).count()
-            , (int) post.getPostComments().stream().filter(postComments -> postComments.getId() > 0).count()
-//,5
-              , post.getView_count()
-          ))
-          .collect(
-              Collectors.toList());
-postToView.stream().forEach(p -> System.out.println("ID - " + p.getId()));
+//    posts.stream().forEach(p -> System.out.println("ID - " + p.getId()));
+//    System.out.println("---------------");
+//    postToView.stream().forEach(p -> System.out.println("ID - " + p.getId()));
 
-*/
-//      postResponse.setPosts(postRepository.getAllPosts(1, "ACCEPTED", date));
-      postResponse.setPosts(postToView);
-      postResponse.setCount(postRepository.getAllPosts(1, "ACCEPTED", date).size());
 
-      return postResponse;
+
+    PostResponse postResponse = new PostResponse();
+    postResponse.setPosts(postToView);
+    postResponse.setCount(postRepository.getPostsCount(1, "ACCEPTED", new Date()));
+
+    return postResponse;
   }
 
-}
+//  public Map<String, String> getSortPosts() {
+//    return sortPosts;
+//  }
 
+}
 
 //    postResponse.setPosts(postRepository.getAllPostsQuery(1, "ACCEPTED", date));
 //    postResponse.setCount(postRepository.getAllPostsQuery(1, "ACCEPTED", date).size());
 
 //    public List<PostToView> setPosts(List< Post > posts) {
 //    this.posts = posts;
-
-
 
 //              , 5
 //    postResponse.setCount(390);
@@ -96,7 +133,6 @@ postToView.stream().forEach(p -> System.out.println("ID - " + p.getId()));
 //    postResponse.setCount(customizedPostsCrudRepository.getAllPosts(1, ACCEPTED, date).size());
 //    postResponse.setPosts(customizedPostsCrudRepository.getAllPosts(1, "ACCEPTED", date, pageable));
 //    postResponse.setCount(customizedPostsCrudRepository.getAllPosts(1, "ACCEPTED", date, pageable).size());
-
 
 //    postResponse.setPosts(postRepository.getAllPostsQuery(1, "ACCEPTED", date));
 //    postResponse.setCount(postRepository.getAllPostsQuery(1, "ACCEPTED", date).size());

@@ -23,7 +23,7 @@ public class PostComments {
   @Column(name = "parent_id")
 //  @NotNull
 //  @Null
-  private int parentId;//INT   комментарий, на который оставлен этот комментарий (может быть NULL, если комментарий оставлен просто к посту)
+  private Integer parentId;//INT   комментарий, на который оставлен этот комментарий (может быть NULL, если комментарий оставлен просто к посту)
 
   @Column(name = "post_id")
   @NotNull
@@ -101,19 +101,21 @@ public class PostComments {
     this.text = text;
   }
 
-//  public User getUser() {
-//    return user;
-//  }
-//
-//  public void setUser(User user) {
-//    this.user = user;
-//  }
-//
-//  public Post getPost() {
-//    return post;
-//  }
-//
-//  public void setPost(Post post) {
-//    this.post = post;
-//  }
+  public User getUser() {
+    return user;
+  }
+
+  public void setUser(User user) {
+    this.user = user;
+  }
+
+  public Post getPost() {
+    return post;
+  }
+
+  public void setPost(Post post) {
+    this.post = post;
+  }
+
+
 }

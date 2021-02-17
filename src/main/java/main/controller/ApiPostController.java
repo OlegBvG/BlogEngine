@@ -1,10 +1,13 @@
 package main.controller;
 
+import java.util.Map;
 import main.api.response.PostResponse;
 import main.service.PostService;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -20,37 +23,20 @@ public class ApiPostController {
 
   @GetMapping("/post")
 
-  private PostResponse post(){
+  public PostResponse post(@RequestParam Map<String,String> allParams){
 
-    return postService.getPartPosts();
+    allParams.entrySet();
+    return postService.getPartPosts(allParams);
+  }
+
+  @GetMapping("/post/search")
+
+  public PostResponse postSearsh(@RequestParam Map<String,String> allParams){
+
+    allParams.entrySet();
+    return postService.getPartPosts(allParams);
   }
 
 }
 
 
-
-//  public ApiPostController(PostServiceImpl postServiceImpl) {
-//    this.postServiceImpl = postServiceImpl;
-//  }
-
-//  private PostsList postsList;
-//  public ApiPostController(PostsList postsList){
-//    this.postsList = postsList;
-//  }
-//  private List<Post> post(){
-
-//  private PostService post(){
-
-//    return new PostResponse();
-//    return postService.getPartPosts();
-//----------------    return postServiceImpl.getPostsAccepted();
-//    List<Post> posts = CustomizedPostCrudRepository.findPosts();
-//    List<Post> posts = CustomizedPostsCrudRepository.getBestPosts();
-//    return CustomizedPostCrudRepository.
-//    return posts;
-//    List<Post> posts = CustomizedPostsCrudRepository.;
-//    List<Post> posts = PostsList.getBestPosts;
-//    return posts;
-//  return postServiceImpl;
-
-//List<Employees> employees = employeesCrudRepository.findEmployeesWithMoreThanSalary(10000L, Sort.by("lastName"));

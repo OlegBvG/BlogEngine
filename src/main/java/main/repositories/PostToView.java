@@ -1,9 +1,5 @@
 package main.repositories;
 
-//import main.model.User;
-
-
-//@Repository
 public class PostToView  {
   private int id;
 //  private Timestamp timestamp;
@@ -100,4 +96,6 @@ public class PostToView  {
   public void setViewCount(int viewCount) {
     this.viewCount = viewCount;
   }
+
+
 }

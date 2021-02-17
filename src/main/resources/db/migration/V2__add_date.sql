@@ -2,28 +2,50 @@ INSERT INTO `blog`.`users`(`id`, `email`, `is_moderator`, `name`, `password`, `r
 INSERT INTO `blog`.`users`(`email`, `is_moderator`, `name`, `password`, `reg_time`) VALUES ('petr@mail.ru', '1', 'Petr', 'qwerty', '20201114');
 
 INSERT INTO `blog`.`posts` (`id`, `is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', '1', 'NEW', 'Пост 1', '20201123', 'Пост №1', '1', '1');
-INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 2', '20201123', 'Пост №21', '1', '2');
-INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 3', '20201123', 'Пост №3', '1', '3');
-INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 4', '20201123', 'Пост №4', '1', '4');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 2', '20201020', 'Пост №21', '1', '2');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 3', '20201121', 'Пост №3', '1', '3');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 4', '20201222', 'Пост №4', '1', '4');
 INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 5', '20201123', 'Пост №5', '1', '5');
-INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 6', '20201123', 'Пост №6', '1', '6');
-INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 7', '20201123', 'Пост №7', '1', '7');
-INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 8', '20201123', 'Пост №8', '1', '8');
-INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 9', '20201123', 'Пост №9', '1', '9');
-INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 10', '20201123', 'Пост №10', '1', '10');
-INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 11', '20201123', 'Пост №11', '1', '11');
-INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 12 второй пользователь', '20201123', 'Пост №12', '2', '12');
-INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 13 второй пользователь', '20201123', 'Пост №13', '2', '13');
-INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 14 второй пользователь', '20201123', 'Пост №14', '2', '14');
-INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'DECLINED', '1', 'Пост 15 второй пользователь', '20201123', 'Пост №15', '2', '14');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 6', '20201124', 'Пост №6', '1', '6');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 7', '20201125', 'Пост №7', '1', '7');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 8', '20201126', 'Пост №8', '1', '8');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 9', '20201127', 'Пост №9', '1', '9');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 10', '20200928', 'Пост №10', '1', '10');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 11', '20201130', 'Пост №11', '1', '11');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 12 второй пользователь', '20201101', 'Пост №12', '2', '12');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 13 второй пользователь', '20201102', 'Пост №13', '2', '13');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 14 второй пользователь', '20201103', 'Пост №14', '2', '14');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'DECLINED', '1', 'Пост 15 второй пользователь', '20201104', 'Пост №15', '2', '14');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 16 второй пользователь', '20201205', 'Пост №16', '2', '130');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 17 второй пользователь', '20201106', 'Пост №17', '2', '140');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 18 второй пользователь', '20201107', 'Пост №18', '2', '110');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 19 второй пользователь', '20201108', 'Пост №19', '2', '145');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 20 второй пользователь', '20201109', 'Пост №20', '2', '111');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 21 второй пользователь', '20201110', 'Пост №21', '2', '144');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 22 второй пользователь', '20201111', 'Пост №22', '2', '139');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 23 второй пользователь', '20201112', 'Пост №23', '2', '142');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 24 второй пользователь', '20201113', 'Пост №24', '2', '137');
+INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 25 второй пользователь', '20201114', 'Пост №25', '2', '148');
 
-INSERT INTO `blog`.`post_comments` (`id`, `post_id`, `text`, `time`, `user_id`) VALUES ('1', '1', 'комментарий к посту №1', '20201124', '2');
-INSERT INTO `blog`.`post_comments` (`post_id`, `text`, `time`, `user_id`) VALUES ('2', 'комментарий к посту №2', '20201121', '2');
-INSERT INTO `blog`.`post_comments` (`post_id`, `text`, `time`, `user_id`) VALUES ('3', 'комментарий к посту №3', '20201122', '2');
-INSERT INTO `blog`.`post_comments` (`post_id`, `text`, `time`, `user_id`) VALUES ('12', 'комментарий к посту №12', '20201125', '1');
+
+
+--INSERT INTO `blog`.`post_comments` (`id`, `parent_id`, `post_id`, `text`, `time`, `user_id`) VALUES ('1', '12', '13', 'комментарий к посту №1', '20201124', '2');
+--INSERT INTO `blog`.`post_comments` (`parent_id`, `post_id`, `text`, `time`, `user_id`) VALUES ('12', '13', 'комментарий к посту №2', '20201121', '2');
+--INSERT INTO `blog`.`post_comments` (`parent_id`, `post_id`, `text`, `time`, `user_id`) VALUES ('12', '13', 'комментарий к посту №3', '20201122', '2');
+--INSERT INTO `blog`.`post_comments` (`parent_id`, `post_id`, `text`, `time`, `user_id`) VALUES ('12', '13', 'комментарий к посту №12', '20201125', '1');
+--INSERT INTO `blog`.`post_comments` (`parent_id`, `post_id`, `text`, `time`, `user_id`) VALUES ('12', '13', 'комментарий к посту №13', '20201125', '1');
+--INSERT INTO `blog`.`post_comments` (`parent_id`, `post_id`, `text`, `time`, `user_id`) VALUES ('12', '13', 'комментарий к посту №13', '20201125', '1');
+--INSERT INTO `blog`.`post_comments` (`parent_id`, `post_id`, `text`, `time`, `user_id`) VALUES ('12', '14', 'комментарий к посту №14', '20201125', '1');
+
+INSERT INTO `blog`.`post_comments` (`id`, `post_id`, `text`, `time`, `user_id`) VALUES ('1', '13', 'комментарий к посту №1', '20201124', '2');
+INSERT INTO `blog`.`post_comments` (`post_id`, `text`, `time`, `user_id`) VALUES ('13', 'комментарий к посту №2', '20201121', '2');
+INSERT INTO `blog`.`post_comments` (`post_id`, `text`, `time`, `user_id`) VALUES ('13', 'комментарий к посту №3', '20201122', '2');
+INSERT INTO `blog`.`post_comments` (`post_id`, `text`, `time`, `user_id`) VALUES ('13', 'комментарий к посту №12', '20201125', '1');
 INSERT INTO `blog`.`post_comments` (`post_id`, `text`, `time`, `user_id`) VALUES ('13', 'комментарий к посту №13', '20201125', '1');
 INSERT INTO `blog`.`post_comments` (`post_id`, `text`, `time`, `user_id`) VALUES ('13', 'комментарий к посту №13', '20201125', '1');
 INSERT INTO `blog`.`post_comments` (`post_id`, `text`, `time`, `user_id`) VALUES ('14', 'комментарий к посту №14', '20201125', '1');
+
+
 
 INSERT INTO `blog`.`post_votes` (`id`, `post_id`, `time`, `user_id`, `value`) VALUES ('1', '1', '20201201', '2', '1');
 INSERT INTO `blog`.`post_votes` (`post_id`, `time`, `user_id`, `value`) VALUES ('2', '20201202', '2', '1');
