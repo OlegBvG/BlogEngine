@@ -21,8 +21,6 @@ public class PostComments {
   private int id; // INT NOT NULL  AUTO_INCREMENT  id комментария
 
   @Column(name = "parent_id")
-//  @NotNull
-//  @Null
   private Integer parentId;//INT   комментарий, на который оставлен этот комментарий (может быть NULL, если комментарий оставлен просто к посту)
 
   @Column(name = "post_id")

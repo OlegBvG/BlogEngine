@@ -33,8 +33,7 @@ public class PostVotes {
   private java.sql.Timestamp time; //DATETIME NOT NULL дата и время лайка / дизлайка
 
   @Column(nullable = false, columnDefinition = "TINYINT")
-//  @NotNull
-  private int value;//TINYINT NOT NULL лайк или дизлайк: 1 или -1
+  private Integer value;//TINYINT NOT NULL лайк или дизлайк: 1 или -1
 
   @ManyToOne
   @JoinColumn(

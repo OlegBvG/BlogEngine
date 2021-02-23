@@ -1,11 +1,15 @@
 package main.service;
 
-import java.util.Date;
+import static java.lang.Integer.min;
+import static org.thymeleaf.util.StringUtils.concat;
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import main.api.response.PostResponse;
+import main.api.response.PostWatchResponse;
 import main.model.Post;
+import main.repositories.CommentsToWatch;
 import main.repositories.PostRepository;
 import main.repositories.PostToView;
 import main.repositories.UserToView;
@@ -25,125 +29,252 @@ public class PostService {
 
   public PostResponse getPartPosts(Map<String, String> allParams) {
 
-//    this.allParams = allParams;
-
-//    sortPosts.put("recent", "");
-//    sortPosts.put("recent", "time");
-//    sortPosts.put("popular", "commentCount DESC");
-//    sortPosts.put("best", "likeCount DESC");
-//    sortPosts.put("early", "time DESC");
-
-
-//System.out.println(updateFoos());
-//    Sort allNamesSort = new Sort(new Sort.Order(Sort.Direction.Desc, "firstName"), new Sort.Order(Sort.Direction.Asc, "lastName"))
-//    Pageable pageable =  PageRequest.of(0, 10, Direction.DESC, "viewCount");
-//    Pageable page = new PageRequest(0, 10, SortDirection.Asc, "firstName")
-//repository.findByFirstName("Test", page)
-//    Pageable pageable =  new PageRequest(0, 10, Direction.DESC, "viewCount");, Direction.DESC, "viewCount"
-//    Pageable pageable =  PageRequest.of(0, 10);
-//    Date date = new Date();
-
-//    PostResponse postResponse = new PostResponse();
-
-//    System.out.println(" postResponse.getOffset() - " + postResponse.Offset);
-
-//    postRepository.getAllPosts(1, "ACCEPTED", date).stream()
-//        .forEach(p -> System.out.println(p.getUser().getName()));
-//    postRepository.getAllPosts(1, "ACCEPTED", date).stream()
-//        .forEach(p -> System.out.println(p.getPostVotes().stream().filter(postVotes -> postVotes.getValue()==1).count()));
-
-//    Page<Post> posts = (Page<Post>) postRepository.getAllPosts(1, "ACCEPTED", date, pageable);
-//    pageable.
-
-//    System.out.println("параметры " + allParams.get("offset"));
     int offset = Integer.parseInt(allParams.get("offset"));
     int limit = Integer.parseInt(allParams.get("limit"));
     String mode = allParams.get("mode");
 
-//    Pageable pageable = PageRequest.of(offset/limit, limit, Sort.by("pv.likeCount"));
     Pageable pageable = PageRequest.of(offset / limit, limit);
     List<Post> posts;
-    switch (mode){
+    switch (mode) {
       case "recent":
         posts = postRepository
-            .getPostsRecent(1, "ACCEPTED", new Date(), pageable);
+            .getPostsRecent(1, "ACCEPTED", pageable);
         break;
       case "popular":
-         posts = postRepository
-            .getPostsPopular(1, "ACCEPTED", new Date(), pageable);
-         break;
+        posts = postRepository
+            .getPostsPopular(1, "ACCEPTED", pageable);
+        break;
       case "best":
         posts = postRepository
-            .getPostsBest(1, "ACCEPTED", new Date(), pageable);
+            .getPostsBest(1, "ACCEPTED", pageable);
         break;
       case "early":
         posts = postRepository
-            .getPostsEarly(1, "ACCEPTED", new Date(), pageable);
+            .getPostsEarly(1, "ACCEPTED", pageable);
         break;
       default:
         posts = postRepository
-            .getPostsRecent(1, "ACCEPTED", new Date(), pageable);
+            .getPostsRecent(1, "ACCEPTED", pageable);
 
     }
 
     List<PostToView> postToView;
     postToView = posts.stream().map(post ->
         new PostToView(post.getId(), post.getTime().getTime() / 1000,
-            new UserToView(post.getUser_id(), post.getUser().getName()),
-            post.getTitle(), "post.getAnnounce()"
+            new UserToView(post.getUserId(), post.getUser().getName()),
+            post.getTitle(),
+            post.getText().substring(0, min(post.getText().length(), 150)).replaceAll("#", "")
+                .concat("...")
             , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == 1)
             .count()
             , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == -1)
             .count()
-            ,  post.getPostComments().size()
-            , post.getView_count()))
+            , post.getPostComments().size()
+            , post.getViewCount()))
         .collect(
             Collectors.toList());
 
 
-//    posts.stream().forEach(p -> System.out.println("ID - " + p.getId()));
-//    System.out.println("---------------");
-//    postToView.stream().forEach(p -> System.out.println("ID - " + p.getId()));
-
-
-
     PostResponse postResponse = new PostResponse();
     postResponse.setPosts(postToView);
-    postResponse.setCount(postRepository.getPostsCount(1, "ACCEPTED", new Date()));
+    postResponse.setCount(postRepository.getPostsCount(1, "ACCEPTED"));
 
     return postResponse;
   }
 
-//  public Map<String, String> getSortPosts() {
-//    return sortPosts;
+  //-------------------
+
+  public PostResponse getSearchPosts(Map<String, String> allParamsSearsh) {
+
+    int offset = Integer.parseInt(allParamsSearsh.get("offset"));
+    int limit = Integer.parseInt(allParamsSearsh.get("limit"));
+    String query = allParamsSearsh.get("query").trim();
+
+
+    Pageable pageable = PageRequest.of(offset / limit, limit);
+    List<Post> posts;
+
+    int countPosts = 0;
+    if (query.length() == 0) {
+      posts = postRepository
+          .getPostsRecent(1, "ACCEPTED", pageable);
+      countPosts = postRepository.getPostsCount(1, "ACCEPTED");
+    } else {
+      posts = postRepository
+          .getPostsSearchQuery(query, 1, "ACCEPTED", pageable);
+      countPosts = postRepository.getPostsSearchQueryCount(query, 1, "ACCEPTED");
+    }
+
+    List<PostToView> postToView;
+    postToView = posts.stream().map(post ->
+        new PostToView(post.getId(), post.getTime().getTime() / 1000,
+            new UserToView(post.getUserId(), post.getUser().getName()),
+            post.getTitle(),
+            post.getText().substring(0, min(post.getText().length(), 150)).replaceAll("#", "")
+                .concat("...")
+            , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == 1)
+            .count()
+            , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == -1)
+            .count()
+            , post.getPostComments().size()
+            , post.getViewCount()))
+        .collect(
+            Collectors.toList());
+
+
+    PostResponse postResponse = new PostResponse();
+    postResponse.setPosts(postToView);
+    postResponse.setCount(countPosts);
+
+    return postResponse;
+  }
+
+  public PostResponse getSearchPostsByDate(Map<String, String> allParams) {
+
+    int offset = Integer.parseInt(allParams.get("offset"));
+    int limit = Integer.parseInt(allParams.get("limit"));
+    String date = allParams.get("date");
+
+    Pageable pageable = PageRequest.of(offset / limit, limit);
+    List<Post> posts;
+
+    int countPosts = 0;
+    posts = postRepository
+        .getPostsSearchByDate(date, 1, "ACCEPTED", pageable);
+    countPosts = postRepository.getPostsSearchByDateCount(date, 1, "ACCEPTED");
+
+    List<PostToView> postToView;
+    postToView = posts.stream().map(post ->
+        new PostToView(post.getId(), post.getTime().getTime() / 1000,
+            new UserToView(post.getUserId(), post.getUser().getName()),
+            post.getTitle(),
+            post.getText().substring(0, min(post.getText().length(), 150)).replaceAll("#", "")
+                .concat("...")
+            , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == 1)
+            .count()
+            , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == -1)
+            .count()
+            , post.getPostComments().size()
+            , post.getViewCount()))
+        .collect(
+            Collectors.toList());
+
+    PostResponse postResponse = new PostResponse();
+    postResponse.setPosts(postToView);
+    postResponse.setCount(countPosts);
+
+    return postResponse;
+
+  }
+
+  public PostResponse getSearchPostsByTag(Map<String, String> allParams) {
+
+    int offset = Integer.parseInt(allParams.get("offset"));
+    int limit = Integer.parseInt(allParams.get("limit"));
+    String tag = concat("#", allParams.get("tag"));
+
+    Pageable pageable = PageRequest.of(offset / limit, limit);
+    List<Post> posts;
+
+    int countPosts = 0;
+    posts = postRepository
+        .getPostsSearchByTag(tag, 1, "ACCEPTED", pageable);
+    countPosts = postRepository.getPostsSearchByTagCount(tag, 1, "ACCEPTED");
+
+    List<PostToView> postToView;
+    postToView = posts.stream().map(post ->
+        new PostToView(post.getId(), post.getTime().getTime() / 1000,
+            new UserToView(post.getUserId(), post.getUser().getName()),
+            post.getTitle(),
+            post.getText().substring(0, min(post.getText().length(), 150)).replaceAll("#", "")
+                .concat("...")
+            , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == 1)
+            .count()
+            , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == -1)
+            .count()
+            , post.getPostComments().size()
+            , post.getViewCount()))
+        .collect(
+            Collectors.toList());
+
+    PostResponse postResponse = new PostResponse();
+    postResponse.setPosts(postToView);
+    postResponse.setCount(countPosts);
+
+    return postResponse;
+
+  }
+
+//  ------------Получение поста---------------
+
+  public PostWatchResponse getPostById(int id) {
+    PostWatchResponse postWatchResponse = new PostWatchResponse();
+    Post post = postRepository.getPostById(id, 1, "ACCEPTED");
+
+    postWatchResponse.setId(post.getId());
+    postWatchResponse.setTimestamp(post.getTime().getTime() / 1000);
+    postWatchResponse.setActive(post.getIsActive() == 1);
+    postWatchResponse.setUser(new UserToView(post.getUserId(), post.getUser().getName()));
+    postWatchResponse.setTitle(post.getTitle());
+    postWatchResponse.setText(post.getText());
+    postWatchResponse.setLikeCount(
+        (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == 1).count());
+    postWatchResponse.setDislikeCount(
+        (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == -1).count());
+    postWatchResponse.setViewCount(post.getViewCount());
+    postWatchResponse.setComments(post.getPostComments().stream().map(c -> new CommentsToWatch(c)).collect(
+        Collectors.toSet()));
+    postWatchResponse
+        .setTags(post.getPostTags().stream().map(t -> t.getName()).collect(Collectors.toList()));
+
+
+    return postWatchResponse;
+  }
+
+//
+//  public PostResponse getSearchPostsAtModeration(Map<String, String> allParams) {
+//
+//    int offset = Integer.parseInt(allParams.get("offset"));
+//    int limit = Integer.parseInt(allParams.get("limit"));
+//    String status = allParams.get("status");
+//
+//    Pageable pageable = PageRequest.of(offset / limit, limit);
+//    List<Post> posts;
+//
+//    int countPosts = 0;
+//    int moderatorId = 1;
+//    posts = postRepository
+//        .getPostsSearchAtModeration(status, moderatorId, 1, "ACCEPTED", new Date(), pageable);
+//    countPosts = postRepository.getPostsSearchAtModerationCount(status, 1, "ACCEPTED", new Date());
+//
+//
+//    List<PostToView> postToView;
+//    postToView = posts.stream().map(post ->
+//        new PostToView(post.getId(), post.getTime().getTime() / 1000,
+//            new UserToView(post.getUser_id(), post.getUser().getName()),
+//            post.getTitle(), post.getText().substring(0, min(post.getText().length(), 150)).replaceAll("#", "").concat("...")
+//            , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == 1)
+//            .count()
+//            , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == -1)
+//            .count()
+//            ,  post.getPostComments().size()
+//            , post.getView_count()))
+//        .collect(
+//            Collectors.toList());
+//
+//
+//    PostResponse postResponse = new PostResponse();
+//    postResponse.setPosts(postToView);
+//    postResponse.setCount(countPosts);
+//
+//    return postResponse;
+//
 //  }
+
 
 }
 
-//    postResponse.setPosts(postRepository.getAllPostsQuery(1, "ACCEPTED", date));
-//    postResponse.setCount(postRepository.getAllPostsQuery(1, "ACCEPTED", date).size());
 
-//    public List<PostToView> setPosts(List< Post > posts) {
-//    this.posts = posts;
-
-//              , 5
-//    postResponse.setCount(390);
-//    postResponse.setPosts(new ArrayList<Integer>());
-//    postResponse.setPosts(customizedPostsCrudRepository.getAllPosts(1, ACCEPTED, date));
-//    postResponse.setCount(customizedPostsCrudRepository.getAllPosts(1, ACCEPTED, date).size());
-//    postResponse.setPosts(customizedPostsCrudRepository.getAllPosts(1, "ACCEPTED", date, pageable));
-//    postResponse.setCount(customizedPostsCrudRepository.getAllPosts(1, "ACCEPTED", date, pageable).size());
-
-//    postResponse.setPosts(postRepository.getAllPostsQuery(1, "ACCEPTED", date));
-//    postResponse.setCount(postRepository.getAllPostsQuery(1, "ACCEPTED", date).size());
-//    postResponse.setPosts(customizedPostsCrudRepository.findByIsActive(1, ACCEPTED,
-//        date));
-//    postResponse.setCount(customizedPostsCrudRepository.findByIsActive(1, ACCEPTED,
-//        date).size());
-//    postResponse.setPosts(postsCrudRepository.findByIsActiveAndModerationStatusAndTimeBefore(1, ACCEPTED,
-//        date));
-//    postResponse.setCount(postsCrudRepository.findByIsActiveAndModerationStatusAndTimeBefore(1, ACCEPTED,
-//        date).size());
 /*
 offset - сдвиг от 0 для постраничного вывода
 limit - количество постов, которое надо вывести
@@ -152,27 +283,5 @@ recent - сортировать по дате публикации, выводи
 popular - сортировать по убыванию количества комментариев
 best - сортировать по убыванию количества лайков
 early - сортировать по дате публикации, выводить сначала старые
-
-
-@Service
-public class PostService {
-  @Autowired
-  private PostsCrudRepository postsCrudRepository;
-  @Transactional
-
-  public PostResponse getPartPosts() {
-    Date date = new Date();
-    PostResponse postResponse = new PostResponse();
-    postResponse.setCount(390);
-//    postResponse.setPosts(new ArrayList<Integer>());
-    postResponse.setPosts(postsCrudRepository.findByIsActiveAndModerationStatusAndTimeBefore(1, ACCEPTED,
-        date));
-    postResponse.setCount(postsCrudRepository.findByIsActiveAndModerationStatusAndTimeBefore(1, ACCEPTED,
-        date).size());
-
-    return postResponse;
-  }
-
-}
 
  */

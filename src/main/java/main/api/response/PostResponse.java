@@ -8,16 +8,6 @@ public class PostResponse {
   private int count;
   private List<PostToView> posts;
 
-
-//  public PostResponse(int count, List<PostToView> posts) {
-//    this.count = count;
-//    this.posts = posts;
-//  }
-//
-//  public PostResponse() {
-//
-//  }
-
   public int getCount() {
     return count;
   }

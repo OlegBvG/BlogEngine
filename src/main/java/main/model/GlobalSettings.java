@@ -32,24 +32,6 @@ public class GlobalSettings {
   @NotNull
   private String value; //VARCHAR(255) NOT NULL значение настройки
 
-  /*
-  @Query(value =
-      "SELECT * FROM posts p WHERE is_active= :isActive AND moderation_status= :modStatus AND " +
-          "time<= :date ORDER BY (SELECT COUNT(*) FROM post_votes pv WHERE pv.post_id=p.id AND pv.value=1)"
-          +
-          " DESC, (SELECT COUNT(*) FROM post_votes pv WHERE pv.post_id=p.id AND pv.value=-1), p.time DESC",
-      nativeQuery = true)
-  List<Post> getBestPosts(@Param("isActive") int isActive,
-      @Param("modStatus") String moderationStatus,
-      @Param("date") Date time,
-      Pageable pageable);
-   */
-//    @Query("SELECT value FROM blog.global_settings gs WHERE gs.code=MULTIUSER_MODE")
-  //  @Query("SELECT * FROM blog.global_settings gs ")
-//  Collection<GlobalSettings> globalSettings() {
-//  @Query(value = "SELECT value FROM blog.global_settings gs", nativeQuery = true)
-//  List<GlobalSettings> globalSettings(@Param"MULTIUSER_MODE" boolean multiuserMode) ;
-
   public int getId() {
     return id;
   }

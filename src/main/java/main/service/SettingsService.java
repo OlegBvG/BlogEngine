@@ -15,7 +15,6 @@ public class SettingsService {
   @Transactional
   public SettingsResponse getGlobalSettings() {
     SettingsResponse settingsResponse = new SettingsResponse();
-//    settingsResponse.setMultiuserMode(true);
     settingsResponse.setMultiuserMode(
         globalSettingsCrudRepository.findByCode("MULTIUSER_MODE").get().getValue()
             .equals("YES"));

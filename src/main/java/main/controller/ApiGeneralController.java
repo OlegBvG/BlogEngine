@@ -1,13 +1,17 @@
 package main.controller;
 
+import static java.time.LocalDate.now;
+
+import main.api.response.CalendarResponse;
 import main.api.response.InitResponse;
 import main.api.response.SettingsResponse;
 import main.api.response.TagResponse;
-import main.model.GlobalSettings;
+import main.service.CalendarService;
 import main.service.SettingsService;
 import main.service.TagService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -17,12 +21,14 @@ public class ApiGeneralController {
   private final SettingsService settingsService;
   private final InitResponse initResponse;
   private TagService tagService;
+  private CalendarService calendarService;
 
   public ApiGeneralController(SettingsService settingsService,
-      InitResponse initResponse, TagService tagService) {
+      InitResponse initResponse, TagService tagService, CalendarService calendarService) {
     this.settingsService = settingsService;
     this.initResponse = initResponse;
     this.tagService = tagService;
+    this.calendarService = calendarService;
   }
 
   @GetMapping("/settings")
@@ -43,29 +49,12 @@ public class ApiGeneralController {
 
   }
 
+  @GetMapping("/calendar")
+  private CalendarResponse calendarResponse(@RequestParam(name = "year") String year){
+
+    int yearParameter = year.trim().length()==0 ? Integer.parseInt(String.valueOf(now().getYear())) : Integer.parseInt(year);
+
+    return calendarService.getCalendar(yearParameter);
+
+  }
 }
-/*
-@RestController
-@RequestMapping("/api")
-public class ApiPostController {
-
-  private PostService postService;
-
-  public ApiPostController(PostService postService) {
-    this.postService = postService;
-  }
-
-  @GetMapping("/post")
-  private PostResponse post(){
-
-//    return new PostResponse();
-    return postService.getPartPosts();
-  }
-
-  @GetMapping("/post")
-  private PostResponse post(){
-
-//    return new PostResponse();
-    return postService.getPartPosts();
-  }
- */

@@ -21,29 +21,26 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "posts")
 public class Post {
+
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private int id; // INT NOT NULL AUTO_INCREMENT id поста
 
-  @Column(name="is_active", columnDefinition = "TINYINT")
+  @Column(name = "is_active", columnDefinition = "TINYINT")
   @NotNull
   private int isActive;//TINYINT NOT NULL скрыта или активна публикация: 0 или 1
-//  private int is_active;//TINYINT NOT NULL скрыта или активна публикация: 0 или 1
-/*
-@Column(name =  "price_per_hour")
-    private float pricePerHour;
- */
+
   @Enumerated(EnumType.STRING)
-  @Column(name="moderation_status", columnDefinition = "ENUM('NEW', 'ACCEPTED', 'DECLINED')")
+  @Column(name = "moderation_status", columnDefinition = "ENUM('NEW', 'ACCEPTED', 'DECLINED')")
   @NotNull
   private ModerationStatus moderationStatus; //ENUM("NEW", "ACCEPTED", "DECLINED") NOT NULL статус модерации, по умолчанию значение "NEW".
 
-  @Column
-  private int moderator_id; // INT  ID пользователя-модератора,  принявшего решение, или NULL
+  @Column(name = "moderator_id")
+  private Integer moderatorId; // INT  ID пользователя-модератора,  принявшего решение, или NULL
 
-  @Column
+  @Column(name = "user_id")
   @NotNull
-  private int user_id; //INT NOT NULL автор поста
+  private int userId; //INT NOT NULL автор поста
 
   @Column
   @NotNull
@@ -53,13 +50,13 @@ public class Post {
   @NotNull
   private String title; //VARCHAR(255) NOT NULL заголовок поста
 
-  @Column (columnDefinition = "TEXT")
+  @Column(columnDefinition = "TEXT")
   @NotNull
   private String text; //TEXT NOT NULL текст поста
 
-  @Column
+  @Column(name = "view_count")
   @NotNull
-  private int view_count; //INT NOT NULL количество просмотров поста
+  private int viewCount; //INT NOT NULL количество просмотров поста
 
 
   @ManyToOne
@@ -83,7 +80,6 @@ public class Post {
 
   @ManyToMany
   @JoinTable(
-//      name = "TagToPost",
       name = "tag2post",
       joinColumns = @JoinColumn(name = "post_id"),
       inverseJoinColumns = @JoinColumn(name = "tag_id"))
@@ -114,24 +110,28 @@ public class Post {
     this.moderationStatus = moderationStatus;
   }
 
-  public int getModerator_id() {
-    return moderator_id;
+  public int getModeratorId() {
+    return moderatorId;
   }
 
-  public void setModerator_id(int moderator_id) {
-    this.moderator_id = moderator_id;
+  public void setModeratorId(int moderatorId) {
+    this.moderatorId = moderatorId;
   }
 
-  public int getUser_id() {
-    return user_id;
+  public int getUserId() {
+    return userId;
   }
 
-  public void setUser_id(int user_id) {
-    this.user_id = user_id;
+  public void setUserId(int userId) {
+    this.userId = userId;
   }
 
   public Timestamp getTime() {
     return time;
+  }
+
+  public String getTimeYMD() {
+    return time.toString().substring(0, 10);
   }
 
   public void setTime(Timestamp time) {
@@ -154,19 +154,19 @@ public class Post {
     this.text = text;
   }
 
-  public int getView_count() {
-    return view_count;
+  public int getViewCount() {
+    return viewCount;
   }
 
-  public void setView_count(int view_count) {
-    this.view_count = view_count;
+  public void setViewCount(int viewCount) {
+    this.viewCount = viewCount;
   }
 
   public User getUser() {
     return user;
   }
 
-//  public UsersModerator getUsersModerator() {
+  //  public UsersModerator getUsersModerator() {
 //    return usersModerator;
 //  }
 //
@@ -178,7 +178,7 @@ public class Post {
     return postComments;
   }
 
-//  public Set<Tags> getPostTags() {
-//    return postTags;
-//  }
+  public Set<Tags> getPostTags() {
+    return postTags;
+  }
 }
