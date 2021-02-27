@@ -29,8 +29,10 @@ public class PostService {
 
   public PostResponse getPartPosts(Map<String, String> allParams) {
 
-    int offset = Integer.parseInt(allParams.get("offset"));
-    int limit = Integer.parseInt(allParams.get("limit"));
+    Integer offset = Integer.valueOf((allParams.get("offset")));
+    Integer limit = Integer.valueOf((allParams.get("limit")));
+//    int offset = Integer.parseInt(allParams.get("offset"));
+//    int limit = Integer.parseInt(allParams.get("limit"));
     String mode = allParams.get("mode");
 
     Pageable pageable = PageRequest.of(offset / limit, limit);

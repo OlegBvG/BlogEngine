@@ -50,7 +50,8 @@ public class ApiPostController {
 
   @GetMapping("/post/{id}")
 
-  public PostWatchResponse postById(@PathVariable int id) {
+//  public PostWatchResponse postById(@PathVariable int id) {
+  public PostWatchResponse postById(@PathVariable Integer id) {
 
     return postService.getPostById(id);
   }

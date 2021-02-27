@@ -5,14 +5,14 @@ import main.repositories.PostToView;
 
 public class PostResponse {
 
-  private int count;
+  private Integer count;
   private List<PostToView> posts;
 
   public int getCount() {
     return count;
   }
 
-  public void setCount(int count) {
+  public void setCount(Integer count) {
     this.count = count;
   }
 
