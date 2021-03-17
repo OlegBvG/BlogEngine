@@ -1,5 +1,6 @@
-INSERT INTO `blog`.`users`(`id`, `email`, `is_moderator`, `name`, `password`, `reg_time`) VALUES ('1', 'ivan@mail.ru', '1', 'Ivan', 'qwerty', '20201112');
-INSERT INTO `blog`.`users`(`email`, `is_moderator`, `name`, `password`, `reg_time`) VALUES ('petr@mail.ru', '1', 'Petr', 'qwerty', '20201114');
+INSERT INTO `blog`.`users`(`id`, `email`, `is_moderator`, `name`, `password`, `reg_time`) VALUES ('1', 'ivan@mail.ru', '1', 'Ivan', '$2y$12$JrVBNZgvaUfDo2xxBw1PdOqoIqXbUiXztInY2R2Uk8MZQWNefw/g. ', '20201112');
+INSERT INTO `blog`.`users`(`email`, `is_moderator`, `name`, `password`, `reg_time`) VALUES ('petr@mail.ru', '1', 'Petr', '$2y$12$JrVBNZgvaUfDo2xxBw1PdOqoIqXbUiXztInY2R2Uk8MZQWNefw/g. ', '20201114');
+INSERT INTO `blog`.`users`(`email`, `is_moderator`, `name`, `password`, `reg_time`) VALUES ('vasya@mail.ru', '0', 'Vasya', '$2y$12$JrVBNZgvaUfDo2xxBw1PdOqoIqXbUiXztInY2R2Uk8MZQWNefw/g. ', '20201114');
 
 INSERT INTO `blog`.`posts` (`id`, `is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', '1', 'NEW', 'Пост 1', '20201123', 'Пост №1', '1', '1');
 INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 2 #SkillBox', '20201020', 'Пост №21', '1', '2');

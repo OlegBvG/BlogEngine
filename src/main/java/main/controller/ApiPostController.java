@@ -4,6 +4,7 @@ import java.util.Map;
 import main.api.response.PostResponse;
 import main.api.response.PostWatchResponse;
 import main.service.PostService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ public class ApiPostController {
 
 
   @GetMapping("/post")
+  @PreAuthorize("hasAuthority('user:write')")
 
   public PostResponse post(@RequestParam Map<String, String> allParams) {
 
@@ -29,6 +31,7 @@ public class ApiPostController {
   }
 
   @GetMapping("/post/search")
+  @PreAuthorize("hasAuthority('user:moderate')")
 
   public PostResponse postSearch(
       @RequestParam(defaultValue = "https://localhost:8080/api/post/search?offset=0&limit=10&query=") Map<String, String> allParams) {

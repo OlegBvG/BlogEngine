@@ -46,6 +46,10 @@ public class User {
   @Column(columnDefinition = "TEXT")
   private String photo;  //TEXT фотография (ссылка на файл), может быть NULL
 
+  public Role getRole(){
+    return is_moderator == 1 ? Role.MODERATOR : Role.USER;
+  }
+
 
   @OneToMany(mappedBy = "user")
   private Set<Post> posts = new HashSet<>();
