@@ -1,6 +1,6 @@
-INSERT INTO `blog`.`users`(`id`, `email`, `is_moderator`, `name`, `password`, `reg_time`) VALUES ('1', 'ivan@mail.ru', '1', 'Ivan', '$2y$12$JrVBNZgvaUfDo2xxBw1PdOqoIqXbUiXztInY2R2Uk8MZQWNefw/g. ', '20201112');
-INSERT INTO `blog`.`users`(`email`, `is_moderator`, `name`, `password`, `reg_time`) VALUES ('petr@mail.ru', '1', 'Petr', '$2y$12$JrVBNZgvaUfDo2xxBw1PdOqoIqXbUiXztInY2R2Uk8MZQWNefw/g. ', '20201114');
-INSERT INTO `blog`.`users`(`email`, `is_moderator`, `name`, `password`, `reg_time`) VALUES ('vasya@mail.ru', '0', 'Vasya', '$2y$12$JrVBNZgvaUfDo2xxBw1PdOqoIqXbUiXztInY2R2Uk8MZQWNefw/g. ', '20201114');
+INSERT INTO `blog`.`users`(`id`, `email`, `is_moderator`, `name`, `password`, `reg_time`) VALUES ('1', 'ivan@mail.ru', '1', 'Ivan', '$2a$12$uThNM41uIKvna2mam5U7vOtjAaQtCrWztGu20ywS4IONMIwu8WjNK', '20201112');
+INSERT INTO `blog`.`users`(`email`, `is_moderator`, `name`, `password`, `reg_time`) VALUES ('petr@mail.ru', '1', 'Petr', '$2a$12$uThNM41uIKvna2mam5U7vOtjAaQtCrWztGu20ywS4IONMIwu8WjNK', '20201114');
+INSERT INTO `blog`.`users`(`email`, `is_moderator`, `name`, `password`, `reg_time`) VALUES ('vasya@mail.ru', '0', 'Vasya', '$2a$12$uThNM41uIKvna2mam5U7vOtjAaQtCrWztGu20ywS4IONMIwu8WjNK', '20201114');
 
 INSERT INTO `blog`.`posts` (`id`, `is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', '1', 'NEW', 'Пост 1', '20201123', 'Пост №1', '1', '1');
 INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'NEW', 'Пост 2 #SkillBox', '20201020', 'Пост №21', '1', '2');
@@ -35,15 +35,6 @@ INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `t
 INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 31 второй пользователь #Python', '20210115', 'Пост №31', '2', '148');
 INSERT INTO `blog`.`posts` (`is_active`, `moderation_status`, `moderator_id`, `text`, `time`, `title`, `user_id`, `view_count`) VALUES ('1', 'ACCEPTED', '1', 'Пост 32 второй пользователь #Python', '20210215', 'Пост №32', '2', '148');
 
-
-
---INSERT INTO `blog`.`post_comments` (`id`, `parent_id`, `post_id`, `text`, `time`, `user_id`) VALUES ('1', '12', '13', 'комментарий к посту №1', '20201124', '2');
---INSERT INTO `blog`.`post_comments` (`parent_id`, `post_id`, `text`, `time`, `user_id`) VALUES ('12', '13', 'комментарий к посту №2', '20201121', '2');
---INSERT INTO `blog`.`post_comments` (`parent_id`, `post_id`, `text`, `time`, `user_id`) VALUES ('12', '13', 'комментарий к посту №3', '20201122', '2');
---INSERT INTO `blog`.`post_comments` (`parent_id`, `post_id`, `text`, `time`, `user_id`) VALUES ('12', '13', 'комментарий к посту №12', '20201125', '1');
---INSERT INTO `blog`.`post_comments` (`parent_id`, `post_id`, `text`, `time`, `user_id`) VALUES ('12', '13', 'комментарий к посту №13', '20201125', '1');
---INSERT INTO `blog`.`post_comments` (`parent_id`, `post_id`, `text`, `time`, `user_id`) VALUES ('12', '13', 'комментарий к посту №13', '20201125', '1');
---INSERT INTO `blog`.`post_comments` (`parent_id`, `post_id`, `text`, `time`, `user_id`) VALUES ('12', '14', 'комментарий к посту №14', '20201125', '1');
 
 INSERT INTO `blog`.`post_comments` (`id`, `post_id`, `text`, `time`, `user_id`) VALUES ('1', '13', 'комментарий к посту №1', '20201124', '2');
 INSERT INTO `blog`.`post_comments` (`post_id`, `text`, `time`, `user_id`) VALUES ('13', 'комментарий к посту №2', '20201121', '2');
@@ -93,19 +84,15 @@ INSERT INTO `blog`.`tag2post` (`post_id`, `tag_id`) VALUES ('24', '4');
 INSERT INTO `blog`.`tag2post` (`post_id`, `tag_id`) VALUES ('25', '4');
 
 
-
-
-
-
-
-
 INSERT INTO `blog`.`global_settings` (`id`, `code`, `name`, `value`) VALUES ('1', 'MULTIUSER_MODE', 'Многопользовательский режим', 'YES');
 INSERT INTO `blog`.`global_settings` (`code`, `name`, `value`) VALUES ('POST_PREMODERATION', 'Премодерация постов', 'NO');
 INSERT INTO `blog`.`global_settings` (`code`, `name`, `value`) VALUES ('STATISTICS_IS_PUBLIC', 'Показывать всем статистику блога', 'YES');
 
 
+INSERT INTO blog.hibernate_sequence (next_val) VALUES (0);
 
 
 
 
---INSERT INTO blog.users (id, email, is_moderator, name, password, reg_time) VALUES ('1', 'ivan@mail.ru', '1', 'Ivan', 'qwerty', '20201112');
+
+

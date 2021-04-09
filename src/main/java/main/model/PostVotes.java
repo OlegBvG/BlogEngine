@@ -87,7 +87,17 @@ public class PostVotes {
     this.value = value;
   }
 
-//  public User getUser() {
+  public PostVotes() {
+  }
+
+  public PostVotes(@NotNull int userIid, @NotNull int postId, Timestamp time, Integer value) {
+    this.userIid = userIid;
+    this.postId = postId;
+    this.time = time;
+    this.value = value;
+  }
+
+  //  public User getUser() {
 //    return user;
 //  }
 //

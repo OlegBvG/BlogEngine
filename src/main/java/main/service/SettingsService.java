@@ -12,6 +12,10 @@ public class SettingsService {
   @Autowired
   private GlobalSettingsCrudRepository globalSettingsCrudRepository;
 
+  @Autowired
+  public AuthService authService;
+
+
   @Transactional
   public SettingsResponse getGlobalSettings() {
     SettingsResponse settingsResponse = new SettingsResponse();
@@ -25,8 +29,21 @@ public class SettingsService {
         globalSettingsCrudRepository.findByCode("STATISTICS_IS_PUBLIC").get().getValue()
             .equals("YES"));
 
-
     return settingsResponse;
+  }
+
+  @Transactional
+  public void saveGlobalSettings(
+      boolean multiUserMode, boolean postPremoderation, boolean statisticsIsPublic) {
+
+    if (authService.isCurrentUserModerator()) {
+      globalSettingsCrudRepository.findByCode("MULTIUSER_MODE").get()
+          .setValue(multiUserMode ? "YES" : "NO");
+      globalSettingsCrudRepository.findByCode("POST_PREMODERATION").get()
+          .setValue(postPremoderation ? "YES" : "NO");
+      globalSettingsCrudRepository.findByCode("STATISTICS_IS_PUBLIC").get()
+          .setValue(statisticsIsPublic ? "YES" : "NO");
+    }
   }
 
 }

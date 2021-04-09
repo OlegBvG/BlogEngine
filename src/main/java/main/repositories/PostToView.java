@@ -2,7 +2,6 @@ package main.repositories;
 
 public class PostToView  {
   private int id;
-//  private Timestamp timestamp;
   private long timestamp;
   private UserToView user;
   private String title;

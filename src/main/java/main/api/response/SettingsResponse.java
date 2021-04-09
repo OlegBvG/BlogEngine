@@ -34,18 +34,3 @@ public class SettingsResponse {
     this.statisticsIsPublic = statisticsIsPublic;
   }
 }
-
-/*
-Получение настроек - GET /api/settings/
-Метод возвращает глобальные настройки блога из таблицы global_settings.
-
-Авторизация: не требуется
-
-Формат ответа:
-
-{
- 	"MULTIUSER_MODE": false,
-	"POST_PREMODERATION": true,
-	"STATISTICS_IS_PUBLIC": true
-}
- */

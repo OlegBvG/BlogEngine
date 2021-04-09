@@ -3,6 +3,8 @@ package main.api.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import main.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Data
 @AllArgsConstructor
@@ -15,6 +17,9 @@ public class UserLoginResponse {
   private boolean moderation;
   private int moderationCount;
   private boolean settings;
+
+  @Autowired
+  UserRepository userRepository;
 
   public long getId() {
     return id;
@@ -33,7 +38,7 @@ public class UserLoginResponse {
   }
 
   public String getPhoto() {
-    return photo;
+    return  photo;
   }
 
   public void setPhoto(String photo) {

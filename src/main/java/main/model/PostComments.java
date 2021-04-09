@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 
 @Entity
 @Table(name = "post_comments")
@@ -115,5 +114,17 @@ public class PostComments {
     this.post = post;
   }
 
+  public PostComments() {
+  }
 
+  public PostComments(Integer parentId, @NotNull int postId,
+      @NotNull int userId, Timestamp time,
+      @NotNull String text) {
+    this.parentId = parentId;
+    this.postId = postId;
+    this.userId = userId;
+    this.time = time;
+    this.text = text;
+
+  }
 }

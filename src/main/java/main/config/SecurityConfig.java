@@ -37,8 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .authenticated()
         .and()
         .formLogin().disable()
-        .httpBasic();
+        .httpBasic().disable();
   }
+
 
   @Bean
   protected DaoAuthenticationProvider daoAuthenticationProvider(){
@@ -61,90 +62,3 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-//        .antMatchers("/api/post/search&query=test").hasAnyRole("MODERATOR")
-
-  /*
-   @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/", "/css/*", "/js/*", "/api/init", "/api/post/*").permitAll()
-                .antMatchers("/api/search*").hasAnyRole("MODERATOR")
-                .anyRequest()
-                .authenticated()
-                .and()
-                .formLogin().disable()
-                .httpBasic().disable();
-    }
-   */
-
-
-
-
-//  @Bean
-//  protected UserDetailsService userDetailsService() {
-////    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-////    return super.userDetailsService();
-////    PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//    return new InMemoryUserDetailsManager(
-//        User.builder()
-//            .username("user")
-//            .password(passwordEncoder().encode("user"))
-////          .roles(Role.USER.toString())
-//            .authorities(Role.USER.getAuthorities())
-//            .build(),
-//        User.builder()
-//            .username("moderator")
-//            .password(passwordEncoder().encode("moderator"))
-////          .roles(Role.MODERATOR.toString())
-//            .authorities(Role.MODERATOR.getAuthorities())
-//            .build()
-//    );
-//  }
-
-
-
-/*
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-//    super.configure(http);
-    http
-        .csrf().disable()
-        .authorizeRequests()
-//        .antMatchers("/", "/api/init, /api/post/*").permitAll()
-//        .antMatchers("/", "/api/login").permitAll()
-//        .antMatchers("/", "/css/*", "/js/*", "/api/init", "/api/post/*").permitAll()
-//----------++++++++++        .antMatchers("/", "/css/*", "/js/*", "/api/init", "/api/**").permitAll()
-        .antMatchers("/**").permitAll()
-//        .antMatchers("/api/search*").hasAnyRole("MODERATOR")
-//        .antMatchers("/", "/api/post").permitAll()
-//        .antMatchers(HttpMethod.GET, "/api/post/*").hasAnyRole(Role.USER.toString(), Role.MODERATOR.toString())
-//        .antMatchers(HttpMethod.GET, "/api/post/*").hasAuthority(Permission.USER.getPermission())
-//        .antMatchers("/api/post/search*").hasAnyRole("MODERATOR")
-//        .antMatchers(HttpMethod.GET, "/api/search*").hasAnyRole(Role.MODERATOR.toString())
-//        .antMatchers(HttpMethod.GET, "/api/search*").hasAuthority(Permission.MODERATE.getPermission())
-        .anyRequest()
-        .authenticated()
-        .and()
-//        .formLogin().permitAll()
-        .formLogin().disable()
-//        .and()
-        .httpBasic();
-//        .httpBasic().disable();
-
-  }
- */

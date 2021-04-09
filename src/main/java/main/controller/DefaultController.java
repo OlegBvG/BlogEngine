@@ -15,40 +15,16 @@ public class DefaultController {
     this.initResponse = initResponse;
   }
 
-  @GetMapping(value = "/")
-  public String index() {
-    System.out.println(initResponse.getTitle());
-
-    return "index";
-  }
-
-
   @RequestMapping(method = {RequestMethod.OPTIONS, RequestMethod.GET}, value = "/**/{path:/")
   public String redirectToIndex(){
       return "/forward:/";
   }
 
 
+  @GetMapping(value = "/**/{path:[^\\.]*}")
+  public String redirectToIndexx() {
+    return "forward:/";
+  }
+
 }
 
-
-/*
-@Controller
-public class DefaultController
-{
-    private final InitResponse initResponse;
-
-    public DefaultController(InitResponse initResponse) {
-        this.initResponse = initResponse;
-    }
-
-
-    @RequestMapping("/")
-    public String index(Model model)
-    {
-        System.out.println(initResponse.getTitle());
-
-        return "index";
-    }
-}
- */

@@ -22,13 +22,11 @@ public class CaptchaCodes {
   @NotNull
   private java.sql.Timestamp time; //DATETIME NOT NULL дата и время генерации кода капчи
 
-  @Column(nullable = false, columnDefinition = "TINYINT")
-  @NotNull
-  private int code;//TINYTEXT NOT NULL код, отображаемый на картинкке капчи
+  @Column(nullable = false, columnDefinition = "TINYTEXT")
+  private @NotNull String code;//TINYTEXT NOT NULL код, отображаемый на картинкке капчи
 
-  @Column(nullable = false, columnDefinition = "TINYINT", name = "secret_code")
-  @NotNull
-  private int secretCode;//TINYTEXT NOT NULL код, передаваемый в параметре
+  @Column(nullable = false, columnDefinition = "TINYTEXT", name = "secret_code")
+  private @NotNull String secretCode;//TINYTEXT NOT NULL код, передаваемый в параметре
 
   public int getId() {
     return id;
@@ -46,21 +44,23 @@ public class CaptchaCodes {
     this.time = time;
   }
 
-  public int getCode() {
+  public @NotNull String getCode() {
     return code;
   }
 
-  public void setCode(int code) {
+  public void setCode(@NotNull String code) {
     this.code = code;
   }
 
-  public int getSecretCode() {
+  public @NotNull String getSecretCode() {
     return secretCode;
   }
 
-  public void setSecretCode(int secretCode) {
+  public void setSecretCode(@NotNull String secretCode) {
     this.secretCode = secretCode;
   }
 
+  public CaptchaCodes() {
 
+  }
 }
