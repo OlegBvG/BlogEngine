@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 public class CaptchaCodes {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id; // INT NOT NULL AUTO_INCREMENT id каптча
 
   @Column(nullable = false, columnDefinition = "DATETIME")

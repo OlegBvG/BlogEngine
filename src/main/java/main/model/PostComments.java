@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 
 public class PostComments {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id; // INT NOT NULL  AUTO_INCREMENT  id комментария
 
   @Column(name = "parent_id")

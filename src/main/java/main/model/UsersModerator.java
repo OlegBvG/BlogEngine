@@ -8,6 +8,7 @@ import javax.persistence.Id;
   @org.hibernate.annotations.Immutable
   @org.hibernate.annotations.Subselect( value = "SELECT id, name FROM users where is_moderator = 1 ")
   @org.hibernate.annotations.Synchronize({"Users"})
+
   public class UsersModerator {
     @Id
     private int Id;

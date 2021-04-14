@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 public class Post {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id; // INT NOT NULL AUTO_INCREMENT id поста
 
   @Column(name = "is_active", columnDefinition = "TINYINT")

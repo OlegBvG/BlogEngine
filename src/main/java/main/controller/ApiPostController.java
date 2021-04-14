@@ -108,11 +108,11 @@ public class ApiPostController {
 
   @PostMapping("/comment")
   public ResponseEntity<?> sendComment(@RequestBody AddCommentRequest addCommentRequest) {
-    Integer parent_id = addCommentRequest.getParent_id();
-    Integer post_id = addCommentRequest.getPost_id();
+    Integer parentId = addCommentRequest.getParentId();
+    Integer postId = addCommentRequest.getPostId();
     String text = addCommentRequest.getText();
 
-    return postService.sendComment(parent_id, post_id, text);
+    return postService.sendComment(parentId, postId, text);
   }
 
 

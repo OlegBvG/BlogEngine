@@ -20,6 +20,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailSendException;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,6 +47,12 @@ public class AuthService {
 
   @Autowired
   public SettingsService settingsService;
+
+  @Autowired
+  public JavaMailSender emailSender;
+
+  @Value("${blog.email}")
+  private String emailFrom;
 
   @Transactional
   public String checkEmailForRestore(Map<String, String> allParams) {
@@ -94,13 +104,54 @@ public class AuthService {
   }
 
 
+
+  /*
+    @Autowired
+  public JavaMailSender emailSender;
+
+  @ResponseBody
+  @PostMapping("/auth/restore")
+
+  public RestorationPasswordResponse sendRestorePassword(
+      @RequestBody Map<String, String> allParams) {
+
+    String restoreLink = authService.checkEmailForRestore(allParams);
+    boolean result = false;
+
+    if (restoreLink.length() > 0) {
+      String emailTo = allParams.get("email");
+      SimpleMailMessage message = new SimpleMailMessage();
+
+      message.setTo(emailTo);
+      message.setFrom(emailFrom);
+      message.setSubject("Восстановление пароля");
+      message.setText(restoreLink);
+
+      try {
+        this.emailSender.send(message);
+        result = true;
+      } catch (final MailSendException e) {
+        System.out.println(" Ошибка отправки сообщения ---> " + e);
+      }
+    }
+
+    RestorationPasswordResponse restorationPasswordResponse = new RestorationPasswordResponse();
+    restorationPasswordResponse.setResult(result);
+
+    return restorationPasswordResponse;
+  }
+   */
+
+//  @Autowired
+//  public JavaMailSender emailSender;
+
   public ResponseEntity<?> checkRegistrationData(Map<String, String> allParams) {
 
     if (!settingsService.getGlobalSettings().isStatisticsIsPublic()) {
       return new ResponseEntity<>(HttpStatus.valueOf(404));
     }
 
-    String e_mail = allParams.get("e_mail");
+    String eMail = allParams.get("e_mail");
     String password = allParams.get("password");
     String name = allParams.get("name");
     String captcha = allParams.get("captcha");
@@ -110,7 +161,25 @@ public class AuthService {
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
-    Optional<User> user = userRepository.findByEmail(e_mail);
+    if (eMail.length() > 0) {
+      SimpleMailMessage message = new SimpleMailMessage();
+
+      message.setTo(eMail);
+      message.setFrom(emailFrom);
+      message.setSubject("Проверка контактных данных");
+      message.setText("Не отвечайте на это письмо");
+
+      try {
+        this.emailSender.send(message);
+//        result = true;
+      } catch (final MailSendException e) {
+        errors.put("email", "Этот email  не существует");
+        System.out.println(" Ошибка отправки сообщения ---> " + e);
+      }
+    }
+
+
+    Optional<User> user = userRepository.findByEmail(eMail);
     if (user.isPresent()) {
       errors.put("email", "Этот email  уже зарегистрирован");
     }
@@ -131,7 +200,7 @@ public class AuthService {
 
     if (errors.isEmpty()) {
 
-      if (userRepository.addUser(e_mail, name, passwordEncoder.encode(password)) == 1) {
+      if (userRepository.addUser(eMail, name, passwordEncoder.encode(password)) == 1) {
         registrationResponse.setResult(true);
       }
 
@@ -211,13 +280,23 @@ public class AuthService {
 
 
   public int getCurrentUserId() {
-    org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder
-        .getContext().getAuthentication().getPrincipal();
+
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    if (authentication.getName().equalsIgnoreCase("anonymousUser")) {
+//      throw new RuntimeException("there is no auth");
+      return 0;
+    }
+
+
+    org.springframework.security.core.userdetails.User user =
+        (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+
     main.model.User currentUser =
         userRepository.findByEmail(user.getUsername())
             .orElseThrow(() -> new UsernameNotFoundException(user.getUsername()));
     return currentUser.getId();
   }
+
 
 
   public boolean isCurrentUserAuthenticated() {

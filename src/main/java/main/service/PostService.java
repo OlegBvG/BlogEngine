@@ -145,7 +145,8 @@ public class PostService {
         new PostToView(post.getId(), post.getTime().getTime() / 1000,
             new UserToView(post.getUserId(), post.getUser().getName()),
             post.getTitle(),
-            post.getText().substring(0, min(post.getText().length(), 150)).replaceAll("#", "")
+            html2text(post.getText().replaceAll("#.+", ""))
+                .substring(0, min(html2text(post.getText().replaceAll("#.+", "")).length(), 150))
                 .concat("...")
             , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == 1)
             .count()
@@ -188,7 +189,8 @@ public class PostService {
         new PostToView(post.getId(), post.getTime().getTime() / 1000,
             new UserToView(post.getUserId(), post.getUser().getName()),
             post.getTitle(),
-            post.getText().substring(0, min(post.getText().length(), 150)).replaceAll("#", "")
+            html2text(post.getText().replaceAll("#.+", ""))
+                .substring(0, min(html2text(post.getText().replaceAll("#.+", "")).length(), 150))
                 .concat("...")
             , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == 1)
             .count()
@@ -226,7 +228,8 @@ public class PostService {
         new PostToView(post.getId(), post.getTime().getTime() / 1000,
             new UserToView(post.getUserId(), post.getUser().getName()),
             post.getTitle(),
-            post.getText().substring(0, min(post.getText().length(), 150)).replaceAll("#", "")
+            html2text(post.getText().replaceAll("#.+", ""))
+                .substring(0, min(html2text(post.getText().replaceAll("#.+", "")).length(), 150))
                 .concat("...")
             , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == 1)
             .count()
@@ -251,7 +254,7 @@ public class PostService {
     PostWatchResponse postWatchResponse = new PostWatchResponse();
     Post post = postRepository.getPostById(id);
 
-    if (post.equals(null)){
+    if (post.equals(null)) {
       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
     }
@@ -287,7 +290,8 @@ public class PostService {
 
   public ResponseEntity<?> getStatistics() {
 
-    if (!authService.isCurrentUserModerator() && !settingsService.getGlobalSettings().isStatisticsIsPublic()){
+    if (!authService.isCurrentUserModerator() && !settingsService.getGlobalSettings()
+        .isStatisticsIsPublic()) {
       return new ResponseEntity<>(HttpStatus.valueOf(401));
     }
 
@@ -346,7 +350,9 @@ public class PostService {
         new PostToView(post.getId(), post.getTime().getTime() / 1000,
             new UserToView(post.getUserId(), post.getUser().getName()),
             post.getTitle(),
-            post.getText().substring(0, min(post.getText().length(), 150)).replaceAll("#", "")
+            html2text(post.getText().replaceAll("#.+", ""))
+                .substring(0, min(html2text(post.getText().replaceAll("#.+", "")).length(), 150))
+
                 .concat("...")
             , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == 1)
             .count()
@@ -394,7 +400,9 @@ public class PostService {
         new PostToView(post.getId(), post.getTime().getTime() / 1000,
             new UserToView(post.getUserId(), post.getUser().getName()),
             post.getTitle(),
-            post.getText().substring(0, min(post.getText().length(), 150)).replaceAll("#", "")
+            html2text(post.getText().replaceAll("#.+", ""))
+                .substring(0, min(html2text(post.getText().replaceAll("#.+", "")).length(), 150))
+
                 .concat("...")
             , (int) post.getPostVotes().stream().filter(postVotes -> postVotes.getValue() == 1)
             .count()
@@ -420,7 +428,7 @@ public class PostService {
     RegistrationResponse registrationResponse = new RegistrationResponse();
     String modStatus = "NEW";
 
-    if (settingsService.getGlobalSettings().isPostPremoderation()){
+    if (settingsService.getGlobalSettings().isPostPremoderation()) {
       modStatus = "ACCEPTED";
     }
 
@@ -442,7 +450,8 @@ public class PostService {
       }
 
       if (postRepository
-          .addPost(active, modStatus, text, new Date(timestamp), title, authService.getCurrentUserId()) == 1) {
+          .addPost(active, modStatus, text, new Date(timestamp), title,
+              authService.getCurrentUserId()) == 1) {
         registrationResponse.setResult(true);
       }
 
@@ -560,11 +569,16 @@ public class PostService {
     RegistrationResponse registrationResponse = new RegistrationResponse();
     int userId = authService.getCurrentUserId();
 
-    Optional<PostVotes> postVotesOptional = postVotesRepository.findByPostIdAndUserId(postId, userId);
+    if (userId == 0) {
+      return registrationResponse;
+    }
 
-    if (postVotesOptional.isPresent()){
+    Optional<PostVotes> postVotesOptional = postVotesRepository
+        .findByPostIdAndUserId(postId, userId);
 
-      if (postVotesOptional.get().getValue() == -1){
+    if (postVotesOptional.isPresent()) {
+
+      if (postVotesOptional.get().getValue() == -1) {
         postVotesOptional.get().setValue(1);
         postVotesRepository.saveAndFlush(postVotesOptional.get());
         registrationResponse.setResult(true);
@@ -585,11 +599,16 @@ public class PostService {
     RegistrationResponse registrationResponse = new RegistrationResponse();
     int userId = authService.getCurrentUserId();
 
-    Optional<PostVotes> postVotesOptional = postVotesRepository.findByPostIdAndUserId(postId, userId);
+    if (userId == 0) {
+      return registrationResponse;
+    }
 
-    if (postVotesOptional.isPresent()){
+    Optional<PostVotes> postVotesOptional = postVotesRepository
+        .findByPostIdAndUserId(postId, userId);
 
-      if (postVotesOptional.get().getValue() == 1){
+    if (postVotesOptional.isPresent()) {
+
+      if (postVotesOptional.get().getValue() == 1) {
         postVotesOptional.get().setValue(-1);
         postVotesRepository.saveAndFlush(postVotesOptional.get());
         registrationResponse.setResult(true);
@@ -620,7 +639,7 @@ public class PostService {
 
     String extension = FilenameUtils.getExtension(image.getOriginalFilename());
     if (!(extension
-        .equalsIgnoreCase("JPG") || extension.equalsIgnoreCase("PNG"))){
+        .equalsIgnoreCase("JPG") || extension.equalsIgnoreCase("PNG"))) {
 
       errors.put("image", "Недопустимый формат файла");
       registrationResponse.setResult(false);
@@ -629,8 +648,7 @@ public class PostService {
       return new ResponseEntity<>(registrationResponse, HttpStatus.BAD_REQUEST);
     }
 
-
-    if (image.getSize() > 700000){
+    if (image.getSize() > 700000) {
 
       errors.put("image", "Размер файла превышаетдопустимый размер");
       registrationResponse.setResult(false);

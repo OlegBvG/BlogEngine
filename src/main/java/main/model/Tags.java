@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 public class Tags {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id; // INT NOT NULL AUTO_INCREMENT id тэга
 
   @Column
