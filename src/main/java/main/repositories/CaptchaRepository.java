@@ -25,14 +25,14 @@ public interface CaptchaRepository extends CrudRepository<CaptchaCodes, Long> {
 
 
   @Modifying
-  @Query(value = "delete from captcha_codes c where TIMESTAMPDIFF(MINUTE, c.time, now()) > 60",
+  @Query(value = "delete from captcha_codes c where TIMESTAMPDIFF(MINUTE, c.time, now()) > 60 ",
       nativeQuery = true)
   void deleteOverdueCaptcha();
 
 
   //-----------Получение каптчи----------------
   @Query(value =
-      "SELECT * FROM blog.captcha_codes where STRCMP(secret_code, :secretCode)=0",
+      "SELECT * FROM captcha_codes where STRCMP(secret_code, :secretCode)=0",
       nativeQuery = true)
   CaptchaCodes getCaptchaBySecretCode(@Param("secretCode") String secretCode);
 

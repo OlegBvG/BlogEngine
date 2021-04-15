@@ -33,7 +33,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
   @Query(value =
       "SELECT *\n"
-          + ", (SELECT users.name FROM blog.users users WHERE users.id=p.user_id) name\n"
+          + ", (SELECT users.name FROM users users WHERE users.id=p.user_id) name\n"
           + ", \"Текст аннонса поста без HTML-тегов\" announce\n"
           + ", (SELECT COUNT(*) FROM post_votes pv WHERE pv.post_id=p.id AND pv.value=1) likeCount\n"
           + ", (SELECT COUNT(*) FROM post_votes pv WHERE pv.post_id=p.id AND pv.value=-1) dislikeCount\n"

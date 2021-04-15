@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS `hibernate_sequence`;
 
 CREATE TABLE `hibernate_sequence` (
   `next_val` bigint(20) DEFAULT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `captcha_codes`
@@ -20,7 +20,7 @@ CREATE TABLE `captcha_codes` (
   `secret_code` tinytext NOT NULL,
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `global_settings`
@@ -34,7 +34,7 @@ CREATE TABLE `global_settings` (
   `name` varchar(255) NOT NULL,
   `value` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 
 
@@ -54,7 +54,7 @@ CREATE TABLE `post_comments` (
   PRIMARY KEY (`id`),
   KEY `FK_post_id` (`post_id`),
   KEY `FK_user_id` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `post_votes`
@@ -71,7 +71,7 @@ CREATE TABLE `post_votes` (
   PRIMARY KEY (`id`),
   KEY `FK_post_id` (`post_id`),
   KEY `FK_user_id` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `posts`
@@ -91,7 +91,7 @@ CREATE TABLE `posts` (
   `view_count` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_user_id` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `tag2post`
@@ -106,7 +106,7 @@ CREATE TABLE `tag2post` (
    PRIMARY KEY (`id`),
   KEY `FK_post_to_tag` (`post_id`,`tag_id`),
   KEY `FK_tag_id` (`tag_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `tags`
@@ -118,7 +118,7 @@ CREATE TABLE `tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Table structure for table `users`
@@ -136,6 +136,6 @@ CREATE TABLE `users` (
   `photo` text,
   `reg_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 

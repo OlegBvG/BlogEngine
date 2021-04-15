@@ -105,46 +105,6 @@ public class AuthService {
 
 
 
-  /*
-    @Autowired
-  public JavaMailSender emailSender;
-
-  @ResponseBody
-  @PostMapping("/auth/restore")
-
-  public RestorationPasswordResponse sendRestorePassword(
-      @RequestBody Map<String, String> allParams) {
-
-    String restoreLink = authService.checkEmailForRestore(allParams);
-    boolean result = false;
-
-    if (restoreLink.length() > 0) {
-      String emailTo = allParams.get("email");
-      SimpleMailMessage message = new SimpleMailMessage();
-
-      message.setTo(emailTo);
-      message.setFrom(emailFrom);
-      message.setSubject("Восстановление пароля");
-      message.setText(restoreLink);
-
-      try {
-        this.emailSender.send(message);
-        result = true;
-      } catch (final MailSendException e) {
-        System.out.println(" Ошибка отправки сообщения ---> " + e);
-      }
-    }
-
-    RestorationPasswordResponse restorationPasswordResponse = new RestorationPasswordResponse();
-    restorationPasswordResponse.setResult(result);
-
-    return restorationPasswordResponse;
-  }
-   */
-
-//  @Autowired
-//  public JavaMailSender emailSender;
-
   public ResponseEntity<?> checkRegistrationData(Map<String, String> allParams) {
 
     if (!settingsService.getGlobalSettings().isStatisticsIsPublic()) {
