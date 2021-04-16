@@ -36,7 +36,4 @@ public interface CaptchaRepository extends CrudRepository<CaptchaCodes, Long> {
       nativeQuery = true)
   CaptchaCodes getCaptchaBySecretCode(@Param("secretCode") String secretCode);
 
-
-
-
 }
