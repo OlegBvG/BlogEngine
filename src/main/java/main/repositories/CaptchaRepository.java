@@ -25,7 +25,7 @@ public interface CaptchaRepository extends CrudRepository<CaptchaCodes, Long> {
 
 
   @Modifying
-  @Query(value = "delete from captcha_codes c where TIMESTAMPDIFF(MINUTE, c.time, now()) > 60 ",
+  @Query(value = "delete from captcha_codes where TIMESTAMPDIFF(MINUTE, time, now()) > 60 ",
       nativeQuery = true)
   void deleteOverdueCaptcha();
 
