@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 
 public class TagToPost {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id; // INT NOT NULL AUTO_INCREMENT id связи
 
   @Column(name = "post_id")
@@ -55,5 +55,21 @@ public class TagToPost {
 
   public void setTagId(int tagId) {
     this.tagId = tagId;
+  }
+
+  public Tags getTags() {
+    return tags;
+  }
+
+  public void setTags(Tags tags) {
+    this.tags = tags;
+  }
+
+  public TagToPost(@NotNull int postId, @NotNull int tagId) {
+    this.postId = postId;
+    this.tagId = tagId;
+  }
+
+  public TagToPost() {
   }
 }

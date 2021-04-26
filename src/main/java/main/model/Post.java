@@ -181,4 +181,26 @@ public class Post {
   public Set<Tags> getPostTags() {
     return postTags;
   }
+
+  public void setPostTags(Set<Tags> postTags) {
+    this.postTags = postTags;
+  }
+
+  public Post() {
+  }
+
+  public Post(@NotNull int isActive,
+      @NotNull ModerationStatus moderationStatus,
+      @NotNull int userId, Timestamp time,
+      @NotNull String title, @NotNull String text,
+      @NotNull int viewCount) {
+
+    this.isActive = isActive;
+    this.moderationStatus = moderationStatus;
+    this.userId = userId;
+    this.time = time;
+    this.title = title;
+    this.text = text;
+    this.viewCount = viewCount;
+  }
 }

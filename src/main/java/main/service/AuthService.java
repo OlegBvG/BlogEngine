@@ -51,8 +51,13 @@ public class AuthService {
   @Autowired
   public JavaMailSender emailSender;
 
+  @Value("${blog.checkExistEmail}")
+  private boolean checkExistEmail;
+
   @Value("${blog.email}")
   private String emailFrom;
+
+
 
   @Transactional
   public String checkEmailForRestore(Map<String, String> allParams) {
@@ -129,13 +134,19 @@ public class AuthService {
       message.setSubject("Проверка контактных данных");
       message.setText("Не отвечайте на это письмо");
 
-      try {
-        this.emailSender.send(message);
-//        result = true;
-      } catch (final MailSendException e) {
-        errors.put("email", "Этот email  не существует");
-        System.out.println(" Ошибка отправки сообщения ---> " + e);
+      if (checkExistEmail) {
+        try {
+          this.emailSender.send(message);
+        } catch (final MailSendException e) {
+          errors.put("email", "Этот email  не существует");
+          System.out.println(" Ошибка отправки сообщения ---> " + e);
+        }
+      } else if (!eMail.matches("^([a-zA-Z0-9_\\-\\.]+@)([a-zA-Z0-9_\\-\\.]+\\.[a-zA-Z]{2,5})$")){
+        errors.put("email", "Недопустимый формат адреса почты");
+        System.out.println(" Недопустимый формат адреса почты ---> " + eMail);
+
       }
+
     }
 
 
@@ -202,7 +213,6 @@ public class AuthService {
       } else {
         errors.put("code", "Ссылка для восстановления пароля устарела."
             + "<a href=\"/login/restore-password\">Запросить ссылку снова</a>");
-//            + "<a href=\"/auth/restore\">Запросить ссылку снова</a>");
         registrationResponse.setResult(false);
         registrationResponse.setErrors(errors);
       }
@@ -243,7 +253,6 @@ public class AuthService {
 
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     if (authentication.getName().equalsIgnoreCase("anonymousUser")) {
-//      throw new RuntimeException("there is no auth");
       return 0;
     }
 

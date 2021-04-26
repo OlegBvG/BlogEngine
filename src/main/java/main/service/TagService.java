@@ -1,8 +1,10 @@
 package main.service;
 
+import static java.util.stream.Collectors.toList;
+
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 import main.api.response.Tag;
 import main.api.response.TagResponse;
 import main.repositories.PostRepository;
@@ -31,7 +33,16 @@ public class TagService {
             .filter(tagPost -> tagPost.getModerationStatus().toString().equals("ACCEPTED"))
             .filter(tagPost -> !tagPost.getTime().after(new Date()))
             .count() / countPosts)).collect(
-            Collectors.toList());
+            toList());
+
+    double maxWeightTag = tags.stream()
+        .max(Comparator.comparingDouble(t -> t.getWeight())).get().getWeight();
+
+    double kWeight = 1 / maxWeightTag;
+
+    for (Tag t : tags){
+      t.setWeight(t.getWeight()*kWeight);
+    }
 
     tagResponse.setTags(tags);
     return tagResponse;

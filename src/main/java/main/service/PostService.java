@@ -3,6 +3,7 @@ package main.service;
 import static java.lang.Integer.min;
 import static main.model.ModerationStatus.ACCEPTED;
 import static main.model.ModerationStatus.DECLINED;
+import static main.model.ModerationStatus.NEW;
 import static org.thymeleaf.util.StringUtils.concat;
 
 import java.sql.Timestamp;
@@ -22,12 +23,14 @@ import main.model.ModerationStatus;
 import main.model.Post;
 import main.model.PostComments;
 import main.model.PostVotes;
+import main.model.TagToPost;
 import main.repositories.CommentsToWatch;
 import main.repositories.PostCommentsRepository;
 import main.repositories.PostRepository;
 import main.repositories.PostToView;
 import main.repositories.PostVotesRepository;
 import main.repositories.TagRepository;
+import main.repositories.TagToPostRepository;
 import main.repositories.UserToView;
 import org.apache.commons.io.FilenameUtils;
 import org.jsoup.Jsoup;
@@ -60,6 +63,9 @@ public class PostService {
 
   @Autowired
   public SettingsService settingsService;
+
+  @Autowired
+  public TagToPostRepository tagToPostRepository;
 
   @Transactional
 
@@ -426,10 +432,11 @@ public class PostService {
 
     Map<String, String> errors = new HashMap<String, String>();
     RegistrationResponse registrationResponse = new RegistrationResponse();
-    String modStatus = "NEW";
+
+    ModerationStatus modStatus = NEW;
 
     if (settingsService.getGlobalSettings().isPostPremoderation()) {
-      modStatus = "ACCEPTED";
+      modStatus = ACCEPTED;
     }
 
     if (title.trim().length() < 3) {
@@ -442,18 +449,21 @@ public class PostService {
     if (errors.isEmpty()) {
       timestamp = Math.max(timestamp * 1000, new Date().getTime());
 
-      if (tags.size() > 0) {
-        Stream<String> streamTags = tags.stream();
-        String t = streamTags.peek((tag) -> checkTagBeforeAdd(tag))
-            .map((s) -> "#" + s + " ").reduce((s1, s2) -> s1 + s2).orElse("");
-        text += " " + t;
+
+      int idNewPost =
+          postRepository
+          .saveAndFlush(new Post(active, modStatus, authService.getCurrentUserId()
+              , new Timestamp(timestamp), title, text, 0))
+              .getId();
+
+      if (idNewPost > 0) {
+        registrationResponse.setResult(true);
+        if (tags.size() > 0) {
+          Stream<String> streamTags = tags.stream();
+          streamTags.forEach((tag) -> checkTagBeforeAdd(tag, idNewPost));
+        }
       }
 
-      if (postRepository
-          .addPost(active, modStatus, text, new Date(timestamp), title,
-              authService.getCurrentUserId()) == 1) {
-        registrationResponse.setResult(true);
-      }
 
     } else {
       registrationResponse.setResult(false);
@@ -481,9 +491,7 @@ public class PostService {
 
       if (tags.size() > 0) {
         Stream<String> streamTags = tags.stream();
-        String t = streamTags.peek((tag) -> checkTagBeforeAdd(tag))
-            .map((s) -> "#" + s + " ").reduce((s1, s2) -> s1 + s2).orElse("");
-        text += " " + t;
+        streamTags.forEach((tag) -> checkTagBeforeAdd(tag, id));
       }
 
       Post post = postRepository.getPostById(id);
@@ -624,10 +632,17 @@ public class PostService {
     return registrationResponse;
   }
 
-  public void checkTagBeforeAdd(String name) {
+  public void checkTagBeforeAdd(String name, int idPost) {
     if (!tagRepository.findByName(name).isPresent()) {
       tagRepository.addTag(name);
     }
+
+    int idTag = tagRepository.findByName(name).get().getId();
+
+    if (tagToPostRepository.countTagToPost(idPost, idTag) == 0){
+      tagToPostRepository.saveAndFlush(new TagToPost(idPost, idTag));
+    }
+
   }
 
 

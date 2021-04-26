@@ -32,6 +32,7 @@ blog.email: borisov_skillbox@mail.ru
 blog.emailPass: Skill-box
 blog.copyright: Дмитрий Сергеев
 blog.copyrightFrom: 2005
+blog.checkExistEmail: false
 
 
 #blog.title=DevPub

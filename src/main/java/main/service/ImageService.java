@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class ImageService {
 
-  static String uploadFld = "D:/Skill/IdeaProjects/BlogEngine/src/main/resources/static/";
+  static String uploadFld = "";
 
    public static String imageResize(MultipartFile photo, String dstFolder, String fileName) {
 
